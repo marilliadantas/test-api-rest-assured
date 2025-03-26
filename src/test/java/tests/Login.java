@@ -36,4 +36,35 @@ public class Login extends BaseAPI {
                 .body("message", equalTo("Email e/ou senha inválidos"))
                 .log().body();
     }
-}
+
+    @Test
+    @Description("Login com campo email vazio")
+    public void loginComEmailVazio() {
+        Response response = loginRequest.logar("", "teste");
+        response.then()
+                .statusCode(HttpStatus.SC_BAD_REQUEST)
+                .body("email", equalTo("email não pode ficar em branco"))
+                .log().body();
+    }
+
+    @Test
+    @Description("Login com campo password vazio")
+    public void loginComPasswordVazio() {
+        Response response = loginRequest.logar("silo@qa.com.br", "");
+        response.then()
+                .statusCode(HttpStatus.SC_BAD_REQUEST)
+                .body("password", equalTo("password não pode ficar em branco"))
+                .log().body();
+    }
+
+    @Test
+    @Description("Login com campos vazios")
+    public void loginComCamposVazios() {
+        Response response = loginRequest.logar("", "");
+        response.then()
+                .statusCode(HttpStatus.SC_BAD_REQUEST)
+                .body("email", equalTo("email não pode ficar em branco"))
+                .body("password", equalTo("password não pode ficar em branco"))
+                .log().body();
+        }
+    }
